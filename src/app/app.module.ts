@@ -10,12 +10,19 @@ import { HttpClientModule } from '@angular/common/http'
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FiltroComponent } from './components/component/filtro/filtro.component';
+import { TablaEndosoComponent } from './components/pages/tabla-endoso/tabla-endoso.component';
+import { TablaCertificadoComponent } from './components/pages/tabla-certificado/tabla-certificado.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    TablaFacultativoComponent
+    TablaFacultativoComponent,
+    FiltroComponent,
+    TablaEndosoComponent,
+    TablaCertificadoComponent
   ],
   imports: [
     BrowserModule,
