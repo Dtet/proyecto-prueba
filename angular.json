@@ -68,7 +68,8 @@
               "browserTarget": "angular-proyecto-uno:build:production"
             },
             "development": {
-              "browserTarget": "angular-proyecto-uno:build:development"
+              "browserTarget": "angular-proyecto-uno:build:development",
+              "proxyConfig": "proxy.config.json"
             }
           },
           "defaultConfiguration": "development"

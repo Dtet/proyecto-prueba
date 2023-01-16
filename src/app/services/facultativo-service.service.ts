@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class FacultativoServiceService {
-  private facultativoUrl = 'http://localhost:3000/COMPAS';
+  private facultativoUrl = '/COMPAS/';
   private facultativoBody = {
     trigger: 'listarContratosFacultativo',
     consulta: {
@@ -51,8 +51,8 @@ export class FacultativoServiceService {
   getData(filter?: any): Observable<any> {
     const options = {
       ...this.httpOptions,
-      body: filter ?? this.facultativoBody,
+      //body: filter ?? this.facultativoBody,
     };
-    return this.http.get(this.facultativoUrl, options);
+    return this.http.post(this.facultativoUrl, this.facultativoBody, options);
   }
 }
