@@ -1,13 +1,24 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from "@/environments/environment";
+
+// move to separated file
+interface IFilterRequestBodyObjects {
+    [key: string]: string | number
+  }
+interface IFilterRequest {
+  [key: string]: string | IFilterRequestBodyObjects;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class FacultativoServiceService {
-  private facultativoUrl = 'http://localhost:3000/COMPAS';
-  private facultativoBody = {
+  private baseUrl = environment.baseUrl;
+  private facultativoUrl = `${this.baseUrl}/COMPAS`;
+
+  private facultativoBody: IFilterRequest = {
     trigger: 'listarContratosFacultativo',
     consulta: {
       tpCodigo: '5',
@@ -48,7 +59,7 @@ export class FacultativoServiceService {
 
   constructor(private http: HttpClient) {}
 
-  getData(filter?: any): Observable<any> {
+  getData(filter?: IFilterRequest): Observable<any> {
     const options = {
       ...this.httpOptions,
       body: filter ?? this.facultativoBody,
