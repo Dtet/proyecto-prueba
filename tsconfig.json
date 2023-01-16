@@ -23,6 +23,7 @@
       "dom"
     ],
     "paths": {
+      "@/*": ["./src/*"],
       "@components/*": [
         "src/app/components/*"
       ],
