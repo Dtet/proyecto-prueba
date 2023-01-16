@@ -20,7 +20,7 @@ const headerNames: { [key: string]: string } = {
   corredor: 'Corredor',
   indole: 'Indole',
   poliza: 'Poliza',
-  moneda: 'Moneda'
+  moneda: 'Moneda',
 };
 
 @Component({
@@ -29,6 +29,7 @@ const headerNames: { [key: string]: string } = {
   styleUrls: ['./tabla-facultativo.component.css'],
 })
 export class TablaFacultativoComponent implements OnInit, AfterViewInit {
+  dataSource = new MatTableDataSource<IFacultativo>([]);
   columns = Object.entries(headerNames).map(([key, header]) => {
     return {
       columnDef: key,
@@ -37,35 +38,47 @@ export class TablaFacultativoComponent implements OnInit, AfterViewInit {
     };
   });
 
-  dataSource = new MatTableDataSource<IFacultativo>([]);
   displayedColumns = this.columns.map((c) => c.columnDef);
+  pageSizeOptions: number[] = [5, 10, 15];
 
-  pageSizeOptions: number[] = [ 5, 10, 15 ]
- 
-  @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-
   constructor(private facultativoServicio: FacultativoServiceService) {}
 
+  // first component load
   ngOnInit(): void {
+    // get data from DB
     this.facultativoServicio.getData().subscribe(
-      (resp) => {
+      (response: any) => {
+        // catch errors in response
+        if (!response?.result?.data?.listado) {
+          throw Error('Something went wrong');
+        }
+
+        // format response
         const { formattedData, keys } = facultativoListAdapter(
-          resp.result.data.listado
+          response.result.data?.listado
         );
+
+        // assign formatted response to table data
         this.dataSource.data = formattedData;
+
+        // format table columns
         this.columns = keys.map((key) => ({
           columnDef: key,
           header: headerNames[key],
           cell: (element: IFacultativo) => `${element[key]}`,
         }));
+
+        // displayed columns by id (key) idfk
         this.displayedColumns = this.columns.map((c) => c.columnDef);
       },
-      (err) => {
+      // catch errors from request
+      (err: Error) => {
         console.log(err);
       }
     );
